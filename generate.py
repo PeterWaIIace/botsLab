@@ -18,10 +18,31 @@ def generateTower(steps,x,y):
         z += height/2
 
 
-if __name__=="__main__":
-    pyrosim.Start_SDF("box.sdf")
+def Create_Robot():
+    pyrosim.Start_URDF("body.urdf")
 
-    for n in range(50):
-        generateTower(10,random.random()*2 -1 ,random.random()*2-1)
+    scale = 1
+    length,width,height = 1*scale,1*scale,1*scale
+    vertDist = height/2
+
+    pyrosim.Send_Cube(name=f"Torso", pos=[0,0,height+vertDist] , size=[length,width,height])
+    pyrosim.Send_Cube(name=f"FrontLeg", pos=[length/2,0,-vertDist] , size=[length,width,height])
+    pyrosim.Send_Cube(name=f"BackLeg", pos=[-length/2,0,-vertDist] , size=[length,width,height])
+    pyrosim.Send_Joint( name = "Torso_FrontLeg" , parent= "Torso" , child = "FrontLeg" , type = "revolute", position = [length/2,0,height])
+    pyrosim.Send_Joint( name = "Torso_BackLeg" , parent= "Torso" , child = "BackLeg" , type = "revolute", position = [-length/2,0,height])
 
     pyrosim.End()
+
+
+def Create_World():
+    pyrosim.Start_SDF("world.sdf")
+    length,width,height = 0.2,0.2,0.2
+    x,y,z = 1,1,height/2
+
+    pyrosim.Send_Cube(name=f"Box1", pos=[x,y,z] , size=[length,width,height])
+    pyrosim.End()
+
+if __name__=="__main__":
+    Create_World()
+
+    Create_Robot()
