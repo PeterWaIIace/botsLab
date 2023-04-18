@@ -1,6 +1,7 @@
 import pyrosim.pyrosim as pyrosim
 import pybullet as p
 import pybullet_data
+import numpy as np
 import time 
 
 # pybullet settings
@@ -25,7 +26,8 @@ for _ in range(100000):
     frontLegTouch = pyrosim.Get_Touch_Sensor_Value_For_Link("FrontLeg")
     print(backLegTouch,frontLegTouch)
 
-    pyrosim.Set_Motor_For_Joint(bodyIndex = robotId,jointName = "Torso_BackLeg" ,controlMode = p.POSITION_CONTROL,    targetPosition = 0.0,    maxForce = 500)
+    pyrosim.Set_Motor_For_Joint(bodyIndex = robotId,jointName = "Torso_BackLeg" ,controlMode = p.POSITION_CONTROL,    targetPosition = -np.pi/4.0,    maxForce = 500)
+    pyrosim.Set_Motor_For_Joint(bodyIndex = robotId,jointName = "Torso_FrontLeg" ,controlMode = p.POSITION_CONTROL,    targetPosition = np.pi/4.0,    maxForce = 500)
 
     time.sleep(0.01)
 
