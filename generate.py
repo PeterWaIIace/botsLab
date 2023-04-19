@@ -18,7 +18,7 @@ def generateTower(steps,x,y):
         z += height/2
 
 
-def Create_Robot():
+def Generate_Body():
     pyrosim.Start_URDF("body.urdf")
 
     scale = 1
@@ -32,6 +32,21 @@ def Create_Robot():
     pyrosim.Send_Joint( name = "Torso_BackLeg" , parent= "Torso" , child = "BackLeg" , type = "revolute", position = [-length/2,0,height])
 
     pyrosim.End()
+
+def Generate_Brain():
+    pyrosim.Start_NeuralNetwork("brain.nndf")
+
+    pyrosim.Send_Sensor_Neuron(name = 0 , linkName = f"Torso")
+    pyrosim.Send_Sensor_Neuron(name = 1 , linkName = f"FrontLeg")
+    pyrosim.Send_Sensor_Neuron(name = 2 , linkName = f"BackLeg")
+    pyrosim.Send_Motor_Neuron(name = 3 , jointName = "Torso_BackLeg")
+    pyrosim.Send_Motor_Neuron(name = 4 , jointName = "Torso_FrontLeg")
+
+    pyrosim.End()
+
+def Create_Robot():
+    Generate_Body()
+    Generate_Brain()
 
 
 def Create_World():
