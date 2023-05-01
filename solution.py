@@ -5,21 +5,20 @@ class Solution:
 
     def __init__(self):
         self.weights = np.random.rand(3,2) * 2  - 1
-        self.fitness = 0.0
+        self.fitness = 100000.0
         pass
 
     def evolve(self):
         pass
 
-    def evaluate(self):
+    def evaluate(self,display):
         self.Create_Body()
         self.Create_Brain()
         self.Create_World()
 
-        os.system("python3 simulation.py")
+        os.system(f"python3 simulation.py {display}")
         with open("fitness.txt","r+") as f:
             self.fitness = float(f.read())
-
         pass
 
     def Create_Body(self):

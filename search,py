@@ -2,6 +2,5 @@ import os
 from hillclimber import Hill_Climber
 
 
-for n in range(2):
-    hd = Hill_Climber()
-    hd.evaluate()
+hd = Hill_Climber()
+hd.evolve()

@@ -4,6 +4,7 @@ import pybullet as p
 import pybullet_data
 import numpy as np
 import time 
+import sys
 
 from sensor import Sensor
 from actuator import Actuator
@@ -11,9 +12,13 @@ from robot import Robot
 
 class World:
 
-    def __init__(self):
+    def __init__(self,directOrGUI):
         # pybullet settings
-        physicsClient = p.connect(p.GUI)
+        if directOrGUI == "GUI":
+            physicsClient = p.connect(p.GUI)
+        else:
+            physicsClient = p.connect(p.DIRECT)
+
         p.configureDebugVisualizer(p.COV_ENABLE_GUI,0)
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
 
@@ -48,7 +53,8 @@ class World:
         pass
 
 if __name__ == "__main__":
-    simulation = World()
+    directOrGUI = sys.argv[1]
+    simulation = World(directOrGUI)
     simulation.RUN()
 
 
