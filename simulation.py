@@ -38,9 +38,14 @@ class World:
             self.robot.think()
             self.robot.act()
 
+            self.Get_Fitness()
             time.sleep(0.01)
 
         p.disconnect()
+
+    def Get_Fitness(self):
+        self.robot.Get_Fitness()
+        pass
 
 if __name__ == "__main__":
     simulation = World()

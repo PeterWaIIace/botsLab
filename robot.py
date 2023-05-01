@@ -40,3 +40,13 @@ class Robot:
                 jointName    = self.nn.Get_Motor_Neurons_Joint(neuronName)
                 desiredAngle = self.nn.Get_Value_Of(neuronName)
                 self.actuators[jointName].setValue(desiredAngle,self.robotId,p.POSITION_CONTROL)
+
+    def Get_Fitness(self):
+        stateOfLinkZero = p.getLinkState(self.robotId,0)
+        positionOfLinkZero = stateOfLinkZero[0]
+        xCoordinateOfLinkZero = positionOfLinkZero[0]
+
+        with open("fitness.txt","w+") as f:
+            f.write(f"{xCoordinateOfLinkZero}")
+
+        pass

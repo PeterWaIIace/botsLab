@@ -1,4 +1,7 @@
 import os 
+from hillclimber import Hill_Climber
+
+hd = Hill_Climber()
 
 for n in range(2):
     os.system("python3 generate.py")
