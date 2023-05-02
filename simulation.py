@@ -50,24 +50,23 @@ class World:
             if self.directOrGUI == "GUI":
                 time.sleep(0.01)
 
-        fitness = self.Get_Fitness()
+        self.Get_Fitness()
         p.disconnect()
-        return fitness
 
     def Get_Fitness(self):
         self.robot.Get_Fitness()
         pass
 
-def runWorld(directOrGUI,ID):
+def runWorld(directOrGUI,simID):
     directOrGUI = directOrGUI
-    simulation = World(directOrGUI,ID)
+    simulation = World(directOrGUI,simID)
     fitness = simulation.RUN()
     return fitness
 
 if __name__ == "__main__":
     directOrGUI = sys.argv[1]
-    ID = sys.argv[2]
-    simulation = World(directOrGUI,ID)
+    simID = sys.argv[2]
+    simulation = World(directOrGUI,simID)
     simulation.RUN()
 
 
