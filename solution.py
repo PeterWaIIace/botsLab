@@ -33,6 +33,10 @@ class Solution:
         print(f"removing fitness file: del fitness{self.myID}.txt")
         os.system(f"del fitness{self.myID}.txt")
 
+    def clean_simulation(self):
+        os.system(f"del body{self.myID}.urdf")
+        os.system(f"del world{self.myID}.sdf")
+
     def evaluate(self,display):
         self.start_simulation(display)
         self.wait_for_simulation_to_end()
