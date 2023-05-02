@@ -5,6 +5,7 @@ import pybullet_data
 import numpy as np
 import time 
 import sys
+import os
 
 from sensor import Sensor
 from actuator import Actuator
@@ -46,11 +47,10 @@ class World:
             self.robot.think()
             self.robot.act()
 
-            fitness = self.Get_Fitness()
-
             if self.directOrGUI == "GUI":
                 time.sleep(0.01)
 
+        fitness = self.Get_Fitness()
         p.disconnect()
         return fitness
 

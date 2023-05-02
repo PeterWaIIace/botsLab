@@ -15,7 +15,12 @@ class Parallel_Hill_Climber:
     def evolve(self):
         # self.Show_Best()
         for i in range(0,c.populationSize):
-            self.parent[i].evaluate("GUI")
+            self.parent[i].start_simulation("GUI")
+        print("started evolving\n===================================================")
+
+        for i in range(0,c.populationSize):
+            self.parent[i].wait_for_simulation_to_end()
+        print("finished evolving\n===================================================")
         # for generation in range(c.numberOfGenerations):
         #     print(generation,c.numberOfGenerations)
         #     self.Evolve_For_One_Generation()

@@ -1,5 +1,6 @@
 import pyrosim.pyrosim as pyrosim
 import numpy as np
+import time
 import os 
 class Solution:
 
@@ -8,24 +9,34 @@ class Solution:
         self.fitness = 100000.0
         self.myID = myID
 
-        # creating initial fitness file
-        with open(f"fitness{self.myID}.txt","w+") as f:
-            f.write(f"{self.fitness}")
-
         pass
 
     def evolve(self):
         pass
 
-    def evaluate(self,display):
+    def start_simulation(self,display):
         self.Create_Body()
         self.Create_Brain()
         self.Create_World()
 
         print(f"run {self.myID}")
         os.system(f"START /B python3 simulation.py {display} {self.myID}")
+
+    def wait_for_simulation_to_end(self):
+
+        while not os.path.exists(f"fitness{self.myID}.txt"):
+            time.sleep(0.01)
+
         with open(f"fitness{self.myID}.txt","r+") as f:
             self.fitness = float(f.read())
+
+        print(f"removing fitness file: del fitness{self.myID}.txt")
+        os.system(f"del fitness{self.myID}.txt")
+
+    def evaluate(self,display):
+        self.start_simulation(display)
+        self.wait_for_simulation_to_end()
+
 
     def Create_Body(self):
         pyrosim.Start_URDF(f"body{self.myID}.urdf")

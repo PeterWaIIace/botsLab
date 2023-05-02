@@ -2,6 +2,7 @@ from pyrosim.neuralNetwork import NEURAL_NETWORK
 import pyrosim.pyrosim as pyrosim
 import pybullet as p
 import numpy as np
+import os
 
 from sensor import Sensor
 from actuator import Actuator
@@ -10,9 +11,11 @@ class Robot:
 
     def __init__(self, robotId,procId):
         self.robotId = robotId
+        self.procId = procId
         self.backLegTouch = 0
         self.frontLegTouch = 0
         self.nn = NEURAL_NETWORK(f"brain{procId}.nndf")
+        os.system(f"del brain{procId}.nndf")
         self.sensors = {}
         self.actuators = {}
         self.prepareToSense()
@@ -46,8 +49,9 @@ class Robot:
         positionOfLinkZero = stateOfLinkZero[0]
         xCoordinateOfLinkZero = positionOfLinkZero[0]
 
-        with open(f"fitness{self.robotId}.txt","w+") as f:
+        with open(f".tmp_fitness{self.procId}.txt","w+") as f:
             f.write(f"{xCoordinateOfLinkZero}")
 
+        os.rename(f".tmp_fitness{self.procId}.txt" , f"fitness{self.procId}.txt")
         return xCoordinateOfLinkZero
         pass

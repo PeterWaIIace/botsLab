@@ -1,2 +1,2 @@
 numberOfGenerations = 10
-populationSize = 2
+populationSize = 1
