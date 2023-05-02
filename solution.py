@@ -3,9 +3,15 @@ import numpy as np
 import os 
 class Solution:
 
-    def __init__(self):
+    def __init__(self,myID):
         self.weights = np.random.rand(3,2) * 2  - 1
         self.fitness = 100000.0
+        self.myID = myID
+
+        # creating initial fitness file
+        with open(f"fitness{self.myID}.txt","w+") as f:
+            f.write(f"{self.fitness}")
+
         pass
 
     def evolve(self):
@@ -16,13 +22,13 @@ class Solution:
         self.Create_Brain()
         self.Create_World()
 
-        os.system(f"python3 simulation.py {display}")
-        with open("fitness.txt","r+") as f:
+        print(f"run {self.myID}")
+        os.system(f"START /B python3 simulation.py {display} {self.myID}")
+        with open(f"fitness{self.myID}.txt","r+") as f:
             self.fitness = float(f.read())
-        pass
 
     def Create_Body(self):
-        pyrosim.Start_URDF("body.urdf")
+        pyrosim.Start_URDF(f"body{self.myID}.urdf")
 
         scale = 1
         length,width,height = 1*scale,1*scale,1*scale
@@ -37,7 +43,7 @@ class Solution:
         pyrosim.End()
 
     def Create_Brain(self):
-        pyrosim.Start_NeuralNetwork("brain.nndf")
+        pyrosim.Start_NeuralNetwork(f"brain{self.myID}.nndf")
         pyrosim.Send_Sensor_Neuron(name = 0 , linkName = f"Torso")
         pyrosim.Send_Sensor_Neuron(name = 1 , linkName = f"FrontLeg")
         pyrosim.Send_Sensor_Neuron(name = 2 , linkName = f"BackLeg")
@@ -51,7 +57,7 @@ class Solution:
         pyrosim.End()
 
     def Create_World(self):
-        pyrosim.Start_SDF("world.sdf")
+        pyrosim.Start_SDF(f"world{self.myID}.sdf")
         length,width,height = 0.2,0.2,0.2
         x,y,z = 1,1,height/2
 

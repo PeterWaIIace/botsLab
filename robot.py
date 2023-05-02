@@ -8,11 +8,11 @@ from actuator import Actuator
 
 class Robot:
 
-    def __init__(self, robotId):
+    def __init__(self, robotId,procId):
         self.robotId = robotId
         self.backLegTouch = 0
         self.frontLegTouch = 0
-        self.nn = NEURAL_NETWORK("brain.nndf")
+        self.nn = NEURAL_NETWORK(f"brain{procId}.nndf")
         self.sensors = {}
         self.actuators = {}
         self.prepareToSense()
@@ -46,7 +46,8 @@ class Robot:
         positionOfLinkZero = stateOfLinkZero[0]
         xCoordinateOfLinkZero = positionOfLinkZero[0]
 
-        with open("fitness.txt","w+") as f:
+        with open(f"fitness{self.robotId}.txt","w+") as f:
             f.write(f"{xCoordinateOfLinkZero}")
 
+        return xCoordinateOfLinkZero
         pass

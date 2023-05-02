@@ -1,6 +1,6 @@
 import os 
-from hillclimber import Hill_Climber
+from parallelHillClimber import Parallel_Hill_Climber
 
 
-hd = Hill_Climber()
-hd.evolve()
+phc = Parallel_Hill_Climber()
+phc.evolve()

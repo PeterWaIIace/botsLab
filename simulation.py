@@ -12,7 +12,8 @@ from robot import Robot
 
 class World:
 
-    def __init__(self,directOrGUI):
+    def __init__(self,directOrGUI,WorldID):
+        self.WorldID = WorldID
         self.directOrGUI = directOrGUI
         # pybullet settings
         if self.directOrGUI == "GUI":
@@ -28,15 +29,16 @@ class World:
 
         # load world plane
         planeId = p.loadURDF("plane.urdf")
-        robotId = p.loadURDF("body.urdf")
+        robotId = p.loadURDF(f"body{self.WorldID}.urdf")
         pyrosim.Prepare_To_Simulate(robotId)
         #load box object
-        p.loadSDF("world.sdf")
+        p.loadSDF(f"world{self.WorldID}.sdf")
 
-        self.robot = Robot(robotId)
+        self.robot = Robot(robotId,self.WorldID)
 
     def RUN(self):
         #simulate
+        fitness = 10000.0 # some arbitrary max fitness
         for t in range(100):
             p.stepSimulation()
 
@@ -44,20 +46,28 @@ class World:
             self.robot.think()
             self.robot.act()
 
-            self.Get_Fitness()
+            fitness = self.Get_Fitness()
 
             if self.directOrGUI == "GUI":
                 time.sleep(0.01)
 
         p.disconnect()
+        return fitness
 
     def Get_Fitness(self):
         self.robot.Get_Fitness()
         pass
 
+def runWorld(directOrGUI,ID):
+    directOrGUI = directOrGUI
+    simulation = World(directOrGUI,ID)
+    fitness = simulation.RUN()
+    return fitness
+
 if __name__ == "__main__":
     directOrGUI = sys.argv[1]
-    simulation = World(directOrGUI)
+    ID = sys.argv[2]
+    simulation = World(directOrGUI,ID)
     simulation.RUN()
 
 
