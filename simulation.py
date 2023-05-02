@@ -13,8 +13,9 @@ from robot import Robot
 class World:
 
     def __init__(self,directOrGUI):
+        self.directOrGUI = directOrGUI
         # pybullet settings
-        if directOrGUI == "GUI":
+        if self.directOrGUI == "GUI":
             physicsClient = p.connect(p.GUI)
         else:
             physicsClient = p.connect(p.DIRECT)
@@ -44,7 +45,9 @@ class World:
             self.robot.act()
 
             self.Get_Fitness()
-            time.sleep(0.01)
+
+            if self.directOrGUI == "GUI":
+                time.sleep(0.01)
 
         p.disconnect()
 
