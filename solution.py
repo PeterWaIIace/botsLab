@@ -1,7 +1,8 @@
 import pyrosim.pyrosim as pyrosim
 import numpy as np
 import time
-import os 
+import os
+
 class Solution:
 
     def __init__(self,myID):
