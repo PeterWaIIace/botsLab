@@ -40,7 +40,7 @@ class World:
     def RUN(self):
         #simulate
         fitness = 10000.0 # some arbitrary max fitness
-        for t in range(100):
+        for t in range(500):
             p.stepSimulation()
 
             self.robot.sense(t)
