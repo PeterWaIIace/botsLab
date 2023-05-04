@@ -46,13 +46,13 @@ class Robot:
                 self.actuators[jointName].setValue(desiredAngle,self.robotId,p.POSITION_CONTROL)
 
     def Get_Fitness(self):
-        stateOfLinkZero = p.getLinkState(self.robotId,0)
-        positionOfLinkZero = stateOfLinkZero[0]
-        xCoordinateOfLinkZero = positionOfLinkZero[0]
+        basePositionAndOrientation = p.getBasePositionAndOrientation(self.robotId)
+        basePosition  = basePositionAndOrientation[0]
+        xPosition  = basePosition[0]
 
         with open(f"{c.path}tmp_fitness{self.procId}.txt","w+") as f:
-            f.write(f"{xCoordinateOfLinkZero}")
+            f.write(f"{xPosition}")
 
         os.rename(f"{c.path}tmp_fitness{self.procId}.txt" , f"{c.path}fitness{self.procId}.txt")
-        return xCoordinateOfLinkZero
+        return xPosition
         pass
