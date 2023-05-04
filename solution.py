@@ -1,5 +1,6 @@
 import pyrosim.pyrosim as pyrosim
 import numpy as np
+import constants as c
 import time
 import os
 
@@ -20,29 +21,28 @@ class Solution:
         self.Create_Brain()
         self.Create_World()
 
-        print(f"run {self.myID}")
-        os.system(f"START /B python3 simulation.py {display} {self.myID}")
+        os.system(f"START /B python3 simulation.py {display} {self.myID} > nul")
 
     def wait_for_simulation_to_end(self):
 
-        while not os.path.exists(f"fitness{self.myID}.txt"):
+        while not os.path.exists(f"{c.path}fitness{self.myID}.txt"):
             time.sleep(0.01)
 
         fitnessRead = False
         while(not fitnessRead):
             try:
-                with open(f"fitness{self.myID}.txt","r+") as f:
+                with open(f"{c.path}fitness{self.myID}.txt","r+") as f:
                     self.fitness = float(f.read())
                 fitnessRead = True
             except Exception as e:
                 print(f"Caught exception: {e}")
 
-        print(f"removing fitness file: del fitness{self.myID}.txt")
-        os.system(f"del fitness{self.myID}.txt")
+        # print(f"removing fitness file: del {c.path}fitness{self.myID}.txt")
+        os.system(f"del {c.path}fitness{self.myID}.txt")
 
     def clean_simulation(self):
-        os.system(f"del body{self.myID}.urdf")
-        os.system(f"del world{self.myID}.sdf")
+        os.system(f"del {c.path}body{self.myID}.urdf")
+        os.system(f"del {c.path}world{self.myID}.sdf")
 
     def evaluate(self,display):
         self.start_simulation(display)
@@ -50,7 +50,7 @@ class Solution:
 
 
     def Create_Body(self):
-        pyrosim.Start_URDF(f"body{self.myID}.urdf")
+        pyrosim.Start_URDF(f"{c.path}body{self.myID}.urdf")
 
         scale = 1
         length,width,height = 1*scale,1*scale,1*scale
@@ -79,7 +79,7 @@ class Solution:
         pyrosim.End()
 
     def Create_Brain(self):
-        pyrosim.Start_NeuralNetwork(f"brain{self.myID}.nndf")
+        pyrosim.Start_NeuralNetwork(f"{c.path}brain{self.myID}.nndf")
         pyrosim.Send_Sensor_Neuron(name = 0 , linkName = f"Torso")
         pyrosim.Send_Sensor_Neuron(name = 1 , linkName = f"FrontLeg")
         pyrosim.Send_Sensor_Neuron(name = 2 , linkName = f"BackLeg")
@@ -106,7 +106,7 @@ class Solution:
         pyrosim.End()
 
     def Create_World(self):
-        pyrosim.Start_SDF(f"world{self.myID}.sdf")
+        pyrosim.Start_SDF(f"{c.path}world{self.myID}.sdf")
         length,width,height = 0.2,0.2,0.2
         x,y,z = 1,1,height/2
 

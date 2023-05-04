@@ -2,10 +2,12 @@ from pyrosim.neuralNetwork import NEURAL_NETWORK
 import pyrosim.pyrosim as pyrosim
 import pybullet as p
 import pybullet_data
+import constants as c
 import numpy as np
 import time 
 import sys
 import os
+
 
 from sensor import Sensor
 from actuator import Actuator
@@ -30,10 +32,10 @@ class World:
 
         # load world plane
         planeId = p.loadURDF("plane.urdf")
-        robotId = p.loadURDF(f"body{self.WorldID}.urdf")
+        robotId = p.loadURDF(f"{c.path}body{self.WorldID}.urdf")
         pyrosim.Prepare_To_Simulate(robotId)
         #load box object
-        p.loadSDF(f"world{self.WorldID}.sdf")
+        p.loadSDF(f"{c.path}world{self.WorldID}.sdf")
 
         self.robot = Robot(robotId,self.WorldID)
 

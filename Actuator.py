@@ -8,9 +8,7 @@ class Actuator:
         self.frequency = frequency
         self.amplitude = amplitude
         self.offset = offset
-    
         # self.motorValues = amplitude * sin(frequency * i + phaseOffset) # not sure if that is needed?
-        
 
         pass
 
