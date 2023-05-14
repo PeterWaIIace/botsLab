@@ -13,13 +13,15 @@ class Parallel_Hill_Climber:
         for _ in range(0,c.populationSize):
             self.parents[self.next_unique_id] = Solution(self.next_unique_id)
             self.next_unique_id+=1
-
-        for key in self.parents.keys():
-            self.parents[key].clean_simulation()
         pass
 
-    def evolve(self):
+    def clean(self):
+        for key in self.parents.keys():
+            self.parents[key].clean_simulation()
 
+    def evolve(self):
+        # cleaning simulation
+        self.clean()
         self.Show_Best()
         # self.Show_Best()
         for generation in range(c.numberOfGenerations):
@@ -29,10 +31,6 @@ class Parallel_Hill_Climber:
             self.Evolve_For_One_Generation()
 
         self.Show_Best()
-
-        # cleaning simulation
-        for i in range(0,c.populationSize):
-            self.parents[i].clean_simulation()
 
     def evaluate(self,solutions):
         for key in solutions.keys():

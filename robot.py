@@ -15,6 +15,8 @@ class Robot:
         self.procId = procId
         self.backLegTouch = 0
         self.frontLegTouch = 0
+        self.cpg = 3
+        self.cpg_freq = 10
         self.nn = NEURAL_NETWORK(f"{c.path}brain{procId}.nndf")
         os.system(f"del {c.path}brain{procId}.nndf")
         self.sensors = {}
@@ -32,7 +34,10 @@ class Robot:
 
     def sense(self,t):
         for n,linkName in enumerate(self.sensors.keys()):
-            self.sensors[linkName].getValue(t)
+            if self.cpg == n:
+                self.sensors[linkName].setValue(t,np.sin(t*self.cpg_freq))
+            else:
+                self.sensors[linkName].getValue(t)
 
     def think(self):
         self.nn.Update()
@@ -45,14 +50,18 @@ class Robot:
                 desiredAngle = self.nn.Get_Value_Of(neuronName)
                 self.actuators[jointName].setValue(desiredAngle,self.robotId,p.POSITION_CONTROL)
 
+    def Save_Fitness(self,fitness):
+        with open(f"{c.path}tmp_fitness{self.procId}.txt","w+") as f:
+            f.write(f"{fitness}")
+
+        os.rename(f"{c.path}tmp_fitness{self.procId}.txt" , f"{c.path}fitness{self.procId}.txt")
+        return fitness
+
     def Get_Fitness(self):
         basePositionAndOrientation = p.getBasePositionAndOrientation(self.robotId)
         basePosition  = basePositionAndOrientation[0]
         xPosition  = basePosition[0]
+        # zPosition  = basePosition[2]
 
-        with open(f"{c.path}tmp_fitness{self.procId}.txt","w+") as f:
-            f.write(f"{xPosition}")
-
-        os.rename(f"{c.path}tmp_fitness{self.procId}.txt" , f"{c.path}fitness{self.procId}.txt")
-        return xPosition
+        return self.Save_Fitness(xPosition)
         pass

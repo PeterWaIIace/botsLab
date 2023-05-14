@@ -99,11 +99,15 @@ class Solution:
         pyrosim.Send_Motor_Neuron(name = 14 , jointName = f"LeftLeg_LowerLeftLeg")
         pyrosim.Send_Motor_Neuron(name = 15 , jointName = f"RightLeg_LowerRightLeg")
 
+        pyrosim.Send_Hidden_Neuron( name = 16 )
+
         for n in range(0,self.weights.shape[0]):
             for m in range(0,self.weights.shape[1]):
                 pyrosim.Send_Synapse( sourceNeuronName = n , targetNeuronName = m + self.weights.shape[0], weight = self.weights[n][m])
 
         pyrosim.End()
+
+        exit()
 
     def Create_World(self):
         pyrosim.Start_SDF(f"{c.path}world{self.myID}.sdf")
