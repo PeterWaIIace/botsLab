@@ -7,7 +7,9 @@ import os
 class Solution:
 
     def __init__(self,myID):
-        self.weights = np.random.rand(9,8) * 2  - 1
+        self.hidden_neurons_size = 10
+        self.input_weights  = np.random.rand(9,self.hidden_neurons_size) * 2  - 1
+        self.output_weights = np.random.rand(self.hidden_neurons_size,8) * 2  - 1
         self.fitness = 100000.0
         self.myID = myID
 
@@ -99,15 +101,18 @@ class Solution:
         pyrosim.Send_Motor_Neuron(name = 14 , jointName = f"LeftLeg_LowerLeftLeg")
         pyrosim.Send_Motor_Neuron(name = 15 , jointName = f"RightLeg_LowerRightLeg")
 
-        pyrosim.Send_Hidden_Neuron( name = 16 )
+        for n in range(0,self.hidden_neurons_size):
+            pyrosim.Send_Hidden_Neuron( name = 16 + n )
 
-        for n in range(0,self.weights.shape[0]):
-            for m in range(0,self.weights.shape[1]):
-                pyrosim.Send_Synapse( sourceNeuronName = n , targetNeuronName = m + self.weights.shape[0], weight = self.weights[n][m])
+        for n in range(0,self.input_weights.shape[0]):
+            for hidden_neuron_index in range(0,self.hidden_neurons_size):
+                pyrosim.Send_Synapse( sourceNeuronName = n , targetNeuronName = 16+hidden_neuron_index, weight = self.input_weights[n][hidden_neuron_index])
+
+        for n in range(0,self.output_weights.shape[1]):
+            for hidden_neuron_index in range(0,self.hidden_neurons_size):
+                pyrosim.Send_Synapse( sourceNeuronName = 16+hidden_neuron_index , targetNeuronName = self.input_weights.shape[0] + n, weight = self.output_weights[hidden_neuron_index][n])
 
         pyrosim.End()
-
-        exit()
 
     def Create_World(self):
         pyrosim.Start_SDF(f"{c.path}world{self.myID}.sdf")

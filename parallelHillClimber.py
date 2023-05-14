@@ -69,9 +69,11 @@ class Parallel_Hill_Climber:
 
     def mutate(self):
         for key in self.parents.keys():
-            maxCol = random.randint(0,self.children[f"_parent_{key}"].weights.shape[0]-1)
-            maxRow = random.randint(0,self.children[f"_parent_{key}"].weights.shape[1]-1)
-            self.children[f"_parent_{key}"].weights[random.randint(0,maxCol),random.randint(0,maxRow)] = random.random() * 2 - 1.
+            hidden_neurons   = random.randint(0,self.children[f"_parent_{key}"].hidden_neurons_size - 1)
+            sensors_length   = random.randint(0,self.children[f"_parent_{key}"].input_weights.shape[0]-1)
+            actuators_length = random.randint(0,self.children[f"_parent_{key}"].output_weights.shape[1]-1)
+            self.children[f"_parent_{key}"].input_weights[sensors_length,hidden_neurons] = random.random() * 2 - 1.
+            self.children[f"_parent_{key}"].output_weights[hidden_neurons,actuators_length] = random.random() * 2 - 1.
         pass
 
     def select(self):

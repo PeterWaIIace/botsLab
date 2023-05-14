@@ -1,3 +1,3 @@
-numberOfGenerations = 50
-populationSize = 10
+numberOfGenerations = 10
+populationSize = 30
 path = ".\\tmp\\"
