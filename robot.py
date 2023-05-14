@@ -78,5 +78,6 @@ class Robot:
             # zPosition  = basePosition[2]
             fitness = xPosition
 
-        return self.Save_Fitness(fitness)
+        self.Save_Fitness(fitness)
+        return fitness
         pass

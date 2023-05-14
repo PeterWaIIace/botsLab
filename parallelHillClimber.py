@@ -40,7 +40,6 @@ class Parallel_Hill_Climber:
             solutions[key].wait_for_simulation_to_end()
 
 
-
     def Evolve_For_One_Generation(self):
         self.spawn()
         self.mutate()
@@ -72,7 +71,7 @@ class Parallel_Hill_Climber:
             hidden_neurons   = random.randint(0,self.children[f"_parent_{key}"].hidden_neurons_size - 1)
             sensors_length   = random.randint(0,self.children[f"_parent_{key}"].input_weights.shape[0]-1)
             actuators_length = random.randint(0,self.children[f"_parent_{key}"].output_weights.shape[1]-1)
-            self.children[f"_parent_{key}"].input_weights[sensors_length,hidden_neurons] = random.random() * 2 - 1.
+            self.children[f"_parent_{key}"].input_weights[sensors_length,hidden_neurons]    = random.random() * 2 - 1.
             self.children[f"_parent_{key}"].output_weights[hidden_neurons,actuators_length] = random.random() * 2 - 1.
         pass
 
