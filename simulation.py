@@ -39,10 +39,10 @@ class World:
 
         self.robot = Robot(robotId,self.WorldID)
 
-    def RUN(self):
+    def RUN(self,steps=500):
         #simulate
         fitness = 10000.0 # some arbitrary max fitness
-        for t in range(500):
+        for t in range(steps):
             p.stepSimulation()
 
             self.robot.sense(t)
@@ -68,7 +68,8 @@ def runWorld(directOrGUI,simID):
 if __name__ == "__main__":
     directOrGUI = sys.argv[1]
     simID = sys.argv[2]
+    steps = int(sys.argv[3])
     simulation = World(directOrGUI,simID)
-    simulation.RUN()
+    simulation.RUN(steps)
 
 

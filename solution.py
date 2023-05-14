@@ -23,7 +23,7 @@ class Solution:
         self.Create_Brain()
         self.Create_World()
 
-        os.system(f"START /B python3 simulation.py {display} {self.myID} > nul")
+        os.system(f"START /B python3 simulation.py {display} {self.myID} {500} > nul")
 
     def wait_for_simulation_to_end(self):
 
