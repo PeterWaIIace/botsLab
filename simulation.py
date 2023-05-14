@@ -35,9 +35,10 @@ class World:
         robotId = p.loadURDF(f"{c.path}body{self.WorldID}.urdf")
         pyrosim.Prepare_To_Simulate(robotId)
         #load box object
-        p.loadSDF(f"{c.path}world{self.WorldID}.sdf")
+        world = p.loadSDF(f"{c.path}world{self.WorldID}.sdf")
 
         self.robot = Robot(robotId,self.WorldID)
+        self.robot.add_Target(world)
 
     def RUN(self,steps=500):
         #simulate

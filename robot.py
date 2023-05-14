@@ -3,6 +3,7 @@ import pyrosim.pyrosim as pyrosim
 import constants as c
 import pybullet as p
 import numpy as np
+import sys
 import os
 
 from sensor import Sensor
@@ -57,11 +58,25 @@ class Robot:
         os.rename(f"{c.path}tmp_fitness{self.procId}.txt" , f"{c.path}fitness{self.procId}.txt")
         return fitness
 
-    def Get_Fitness(self):
-        basePositionAndOrientation = p.getBasePositionAndOrientation(self.robotId)
-        basePosition  = basePositionAndOrientation[0]
-        xPosition  = basePosition[0]
-        # zPosition  = basePosition[2]
+    def add_Target(self,targetID):
+        self.targetID = targetID
 
-        return self.Save_Fitness(xPosition)
+    def Get_Fitness(self):
+        if self.targetID:
+            robotPosition = p.getBasePositionAndOrientation(self.robotId)
+            robotBasePosition  = robotPosition[0]
+
+            # print(f"output targetID: {self.targetID}",file=sys.stderr)
+            basePositionAndOrientation = p.getBasePositionAndOrientation(self.targetID[0])
+            basePosition  = basePositionAndOrientation[0]
+
+            fitness = np.linalg.norm(np.array(basePosition) - np.array(robotBasePosition))
+        else:
+            basePositionAndOrientation = p.getBasePositionAndOrientation(self.robotId)
+            basePosition  = basePositionAndOrientation[0]
+            xPosition  = basePosition[0]
+            # zPosition  = basePosition[2]
+            fitness = xPosition
+
+        return self.Save_Fitness(fitness)
         pass
