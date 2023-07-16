@@ -1,8 +1,9 @@
 import os
 import copy
 import random
-import constants as c
-from solution import Solution
+import robot.constants as c
+from robot.solution import Solution
+from multiprocessing import Pool
 
 class Parallel_Hill_Climber:
 
@@ -13,13 +14,15 @@ class Parallel_Hill_Climber:
         for _ in range(0,c.populationSize):
             self.parents[self.next_unique_id] = Solution(self.next_unique_id)
             self.next_unique_id+=1
-
-        for key in self.parents.keys():
-            self.parents[key].clean_simulation()
         pass
 
-    def evolve(self):
+    def clean(self):
+        for key in self.parents.keys():
+            self.parents[key].clean_simulation()
 
+    def evolve(self):
+        # cleaning simulation
+        self.clean()
         self.Show_Best()
         # self.Show_Best()
         for generation in range(c.numberOfGenerations):
@@ -30,17 +33,12 @@ class Parallel_Hill_Climber:
 
         self.Show_Best()
 
-        # cleaning simulation
-        for i in range(0,c.populationSize):
-            self.parents[i].clean_simulation()
-
     def evaluate(self,solutions):
         for key in solutions.keys():
             solutions[key].start_simulation("DIRECT")
 
         for key in solutions.keys():
             solutions[key].wait_for_simulation_to_end()
-
 
 
     def Evolve_For_One_Generation(self):
@@ -71,9 +69,11 @@ class Parallel_Hill_Climber:
 
     def mutate(self):
         for key in self.parents.keys():
-            maxCol = random.randint(0,self.children[f"_parent_{key}"].weights.shape[0]-1)
-            maxRow = random.randint(0,self.children[f"_parent_{key}"].weights.shape[1]-1)
-            self.children[f"_parent_{key}"].weights[random.randint(0,maxCol),random.randint(0,maxRow)] = random.random() * 2 - 1.
+            hidden_neurons   = random.randint(0,self.children[f"_parent_{key}"].hidden_neurons_size - 1)
+            sensors_length   = random.randint(0,self.children[f"_parent_{key}"].input_weights.shape[0]-1)
+            actuators_length = random.randint(0,self.children[f"_parent_{key}"].output_weights.shape[1]-1)
+            self.children[f"_parent_{key}"].input_weights[sensors_length,hidden_neurons]    = random.random() * 2 - 1.
+            self.children[f"_parent_{key}"].output_weights[hidden_neurons,actuators_length] = random.random() * 2 - 1.
         pass
 
     def select(self):

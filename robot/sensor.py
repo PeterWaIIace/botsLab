@@ -8,6 +8,13 @@ class Sensor:
         self.linkName = linkName
         pass
 
+    def setValue(self,t,x):
+        if t >= len(self.values):
+            tmp = self.values
+            self.values = np.zeros(len(self.values) + 100)
+            self.values[:len(tmp)] = tmp
+        self.values[t] = x
+
     def getValue(self,t) -> float:
         if t >= len(self.values):
             tmp = self.values
