@@ -4,7 +4,7 @@ import robot.constants as c
 import time
 import os
 
-from simulation import runWorld
+from world.simulation import runWorld
 
 class Solution:
 
@@ -23,47 +23,6 @@ class Solution:
         self.Create_Body()
         self.Create_Brain()
         self.Create_World()
-
-
-    #TODO: this should go to different class ================================================================================================================================
-    def start_simulation(self,display):
-        runWorld(display,self.myID,500)
-        os.system(f"START /B python3 simulation.py {display} {self.myID} {500} > nul")
-
-    def wait_for_simulation_to_end(self):
-
-        while not os.path.exists(f"{c.path}fitness{self.myID}.txt"):
-            time.sleep(0.01)
-
-        fitnessRead = False
-        while(not fitnessRead):
-            try:
-                with open(f"{c.path}fitness{self.myID}.txt","r+") as f:
-                    self.fitness = float(f.read())
-                fitnessRead = True
-            except Exception as e:
-                print(f"Caught exception: {e}")
-
-        # print(f"removing fitness file: del {c.path}fitness{self.myID}.txt")
-        os.system(f"del {c.path}fitness{self.myID}.txt")
-
-    def clean_simulation(self):
-        os.system(f"del {c.path}body{self.myID}.urdf")
-        os.system(f"del {c.path}world{self.myID}.sdf")
-
-    def evaluate(self,display):
-        self.start_simulation(display)
-        self.wait_for_simulation_to_end()
-
-    def Create_World(self):
-        pyrosim.Start_SDF(f"{c.path}world{self.myID}.sdf")
-        length,width,height = 0.2,0.2,0.2
-        x,y,z = 1,1,height/2
-
-        pyrosim.Send_Cube(name=f"Box1", pos=[x,y,z] , size=[length,width,height])
-        pyrosim.End()
-
-    #TODO: this should go to different class ================================================================================================================================
 
     def Create_Body(self):
         pyrosim.Start_URDF(f"{c.path}body{self.myID}.urdf")
