@@ -3,6 +3,7 @@ import copy
 import random
 import constants as c
 from solution import Solution
+from multiprocessing import Pool
 
 class Parallel_Hill_Climber:
 

@@ -2,6 +2,7 @@ import copy
 import random
 import constants
 from solution import Solution
+from multiprocessing import Pool
 
 class Hill_Climber:
 
