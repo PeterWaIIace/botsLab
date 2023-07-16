@@ -5,6 +5,7 @@ class botGenerator:
     def __init__(self):
         self.bots = dict()
         self.names = dict()
+        self.vectors = []
 
     def __generateUniqueNames(self,nNames):
         for n in range(nNames):
@@ -14,8 +15,8 @@ class botGenerator:
     def generateVectors(self,nVectors, length):
         self.__generateUniqueNames(nVectors)
         for n in range(nVectors):
-            nVectors.append = np.random(length)
-        return nVectors
+            self.vectors.append(np.random.rand(length))
+        return self.vectors
 
     def generateBots(self,vectors):
         if(len(self.names) == 0):
@@ -24,7 +25,7 @@ class botGenerator:
         for n,v in enumerate(vectors):
             self.bots[n] = Solution(self.names[n],v)
 
-        return self.bots
+        return self.bots.values()
 
     def remove(self,name):
         pass

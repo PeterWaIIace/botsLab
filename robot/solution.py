@@ -4,7 +4,6 @@ import robot.constants as c
 import time
 import os
 
-from world.simulation import runWorld
 
 class Solution:
 
@@ -17,15 +16,23 @@ class Solution:
         self.input_weights  = np.reshape(vector[:9*self.hidden_neurons_size],(9,self.hidden_neurons_size))
         self.output_weights = np.reshape(vector[9*self.hidden_neurons_size:9*self.hidden_neurons_size + self.hidden_neurons_size*8],(self.hidden_neurons_size,8))
 
-        self.fitness = 100000.0
         self.myID = myID
+        self.bodyFile = f"{c.path}body{self.myID}.urdf"
+        self.brainFile = f"{c.path}brain{self.myID}.nndf"
+
+        self.fitness = 100000.0
 
         self.Create_Body()
         self.Create_Brain()
-        self.Create_World()
+
+    def getBody(self):
+        return self.bodyFile
+
+    def getBrain(self):
+        return self.brainFile
 
     def Create_Body(self):
-        pyrosim.Start_URDF(f"{c.path}body{self.myID}.urdf")
+        pyrosim.Start_URDF(self.bodyFile)
 
         scale = 1
         length,width,height = 1*scale,1*scale,1*scale
@@ -54,7 +61,7 @@ class Solution:
         pyrosim.End()
 
     def Create_Brain(self):
-        pyrosim.Start_NeuralNetwork(f"{c.path}brain{self.myID}.nndf")
+        pyrosim.Start_NeuralNetwork(self.brainFile)
         pyrosim.Send_Sensor_Neuron(name = 0 , linkName = f"Torso")
         pyrosim.Send_Sensor_Neuron(name = 1 , linkName = f"FrontLeg")
         pyrosim.Send_Sensor_Neuron(name = 2 , linkName = f"BackLeg")

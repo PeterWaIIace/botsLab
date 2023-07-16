@@ -31,6 +31,12 @@ class World:
         # load world plane
         p.loadURDF("plane.urdf")
 
+    def loadBots(self,bots):
+        for bot in bots:
+            print(bot)
+            p.loadURDF(bot.getBody())
+
+
     def run(self,steps):
 
         self.running = True
@@ -56,6 +62,7 @@ class Simulation:
 
     def start(self):
         steps = 500
+        self.world.loadBots(self.bots)
         self.simulationWorker = Thread(target=self.world.run,args=(steps,))
         self.simulationWorker.start()
 
