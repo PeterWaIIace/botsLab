@@ -2,16 +2,16 @@ from pyrosim.neuralNetwork import NEURAL_NETWORK
 import pyrosim.pyrosim as pyrosim
 import pybullet as p
 import pybullet_data
-import constants as c
+import robot.constants as c
 import numpy as np
 import time 
 import sys
 import os
 
 
-from sensor import Sensor
-from actuator import Actuator
-from robot import Robot
+from robot.sensor import Sensor
+from robot.actuator import Actuator
+from robot.robot import Robot
 
 class World:
 

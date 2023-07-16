@@ -1,8 +1,8 @@
 import os
 import copy
 import random
-import constants as c
-from solution import Solution
+import robot.constants as c
+from robot.solution import Solution
 from multiprocessing import Pool
 
 class Parallel_Hill_Climber:

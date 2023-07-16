@@ -1,13 +1,13 @@
 from pyrosim.neuralNetwork import NEURAL_NETWORK
 import pyrosim.pyrosim as pyrosim
-import constants as c
+import robot.constants as c
 import pybullet as p
 import numpy as np
 import sys
 import os
 
-from sensor import Sensor
-from actuator import Actuator
+from robot.sensor import Sensor
+from robot.actuator import Actuator
 
 class Robot:
 

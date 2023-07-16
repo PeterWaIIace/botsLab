@@ -1,6 +1,6 @@
 import pyrosim.pyrosim as pyrosim
 import numpy as np
-import constants as c
+import robot.constants as c
 import time
 import os
 
@@ -20,11 +20,14 @@ class Solution:
     def evolve(self):
         pass
 
-    def start_simulation(self,display):
+    # TODO: change name
+    def makeItReal(self):
         self.Create_Body()
         self.Create_Brain()
         self.Create_World()
-        runWorld(display,self.myID,500)
+
+        # def start_simulation(self,display):
+        # runWorld(display,self.myID,500)
         # os.system(f"START /B python3 simulation.py {display} {self.myID} {500} > nul")
 
     def wait_for_simulation_to_end(self):
@@ -116,10 +119,10 @@ class Solution:
 
         pyrosim.End()
 
-    def Create_World(self):
-        pyrosim.Start_SDF(f"{c.path}world{self.myID}.sdf")
-        length,width,height = 0.2,0.2,0.2
-        x,y,z = 1,1,height/2
+    # def Create_World(self):
+    #     pyrosim.Start_SDF(f"{c.path}world{self.myID}.sdf")
+    #     length,width,height = 0.2,0.2,0.2
+    #     x,y,z = 1,1,height/2
 
-        pyrosim.Send_Cube(name=f"Box1", pos=[x,y,z] , size=[length,width,height])
-        pyrosim.End()
+    #     pyrosim.Send_Cube(name=f"Box1", pos=[x,y,z] , size=[length,width,height])
+    #     pyrosim.End()
