@@ -8,27 +8,27 @@ from simulation import runWorld
 
 class Solution:
 
-    def __init__(self,myID):
+    def __init__(self,myID,vector):
         self.hidden_neurons_size = 10
-        self.input_weights  = np.random.rand(9,self.hidden_neurons_size) * 2  - 1
-        self.output_weights = np.random.rand(self.hidden_neurons_size,8) * 2  - 1
+
+        #vector2brain
+        #TODO: it may require normalization to have same form as previous version `np.random.rand(self.hidden_neurons_size,8) * 2  - 1`
+        #TODO: move this code to other function so it is bit cleaner
+        self.input_weights  = np.reshape(vector[:9*self.hidden_neurons_size],(9,self.hidden_neurons_size))
+        self.output_weights = np.reshape(vector[9*self.hidden_neurons_size:9*self.hidden_neurons_size + self.hidden_neurons_size*8],(self.hidden_neurons_size,8))
+
         self.fitness = 100000.0
         self.myID = myID
 
-        pass
-
-    def evolve(self):
-        pass
-
-    # TODO: change name
-    def makeItReal(self):
         self.Create_Body()
         self.Create_Brain()
         self.Create_World()
 
-        # def start_simulation(self,display):
-        # runWorld(display,self.myID,500)
-        # os.system(f"START /B python3 simulation.py {display} {self.myID} {500} > nul")
+
+    #TODO: this should go to different class ================================================================================================================================
+    def start_simulation(self,display):
+        runWorld(display,self.myID,500)
+        os.system(f"START /B python3 simulation.py {display} {self.myID} {500} > nul")
 
     def wait_for_simulation_to_end(self):
 
@@ -55,6 +55,15 @@ class Solution:
         self.start_simulation(display)
         self.wait_for_simulation_to_end()
 
+    def Create_World(self):
+        pyrosim.Start_SDF(f"{c.path}world{self.myID}.sdf")
+        length,width,height = 0.2,0.2,0.2
+        x,y,z = 1,1,height/2
+
+        pyrosim.Send_Cube(name=f"Box1", pos=[x,y,z] , size=[length,width,height])
+        pyrosim.End()
+
+    #TODO: this should go to different class ================================================================================================================================
 
     def Create_Body(self):
         pyrosim.Start_URDF(f"{c.path}body{self.myID}.urdf")
@@ -118,11 +127,3 @@ class Solution:
                 pyrosim.Send_Synapse( sourceNeuronName = 16+hidden_neuron_index , targetNeuronName = self.input_weights.shape[0] + n, weight = self.output_weights[hidden_neuron_index][n])
 
         pyrosim.End()
-
-    # def Create_World(self):
-    #     pyrosim.Start_SDF(f"{c.path}world{self.myID}.sdf")
-    #     length,width,height = 0.2,0.2,0.2
-    #     x,y,z = 1,1,height/2
-
-    #     pyrosim.Send_Cube(name=f"Box1", pos=[x,y,z] , size=[length,width,height])
-    #     pyrosim.End()
